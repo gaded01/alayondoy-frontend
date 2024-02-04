@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Deptest App",
+    "name": "AlayonDoy Booking App",
     "slug": "deptestapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/app-logo.png",
+    "icon": "./assets/app-logo2.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/deptest-splash.png",
+      "image": "./assets/app-logo2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,13 +22,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/app-logo.png",
+        "foregroundImage": "./assets/app-logo2.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package" : "com.deptestapp.myapp"
+      "package": "com.deptestapp.myapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2001932d-d057-47f7-b9fd-922aac68769a"
+      }
     }
   }
 }

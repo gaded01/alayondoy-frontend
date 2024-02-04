@@ -26,12 +26,14 @@ import {
   LockClosedIcon,
   UserIcon,
 } from "react-native-heroicons/solid";
+import { useStoreProfileContext } from "../context/StoreProfileContext";
 
-const LoginScreen = ({ navigate }) => {
+const StoreLogin = ({ navigate }) => {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
+  const { setStoreProfile } = useStoreProfileContext();
   const navigation = useNavigation();
 
   useLayoutEffect(() =>
@@ -39,10 +41,16 @@ const LoginScreen = ({ navigate }) => {
       headerShown: false,
     })
   );
+
   const storeToken = async (value) => {
     const res = await AsyncStorage.setItem("@access_token", value);
     return res;
   };
+
+  useEffect(() => {
+    console.log('err');
+  },[])
+
 
   const submitLogin = () => {
     const params = { username: username,  password: password};
@@ -52,9 +60,10 @@ const LoginScreen = ({ navigate }) => {
       .then((res) => {
         setLoading('here', false);
         if (res.data.status !== "failed") {
-          console.log('error', res);
+          console.log(res.data.access_token);
+          setStoreProfile(res.data.user);
           storeToken(res.data.access_token);
-          navigation.navigate("CustomerHome");
+          navigation.navigate("StoreHome");
         } else {
           alert(res.data.message);
         }
@@ -62,7 +71,7 @@ const LoginScreen = ({ navigate }) => {
       .catch((error) => {
         console.log('error', error);
         setLoading(false);
-      });
+      }); 
  
   };
 
@@ -77,12 +86,20 @@ const LoginScreen = ({ navigate }) => {
         <View className="flex flex-row justify-center mt-10">
           <Image
             source={require("../../assets/app-logo.jpg")}
-            className="h-44 w-44"
+            className="h-32 w-32"
           />
         </View>
-        <Text className="mt-2 text-3xl text-white font-bold">Login</Text>
+        <Text className="mt-2 text-3xl text-white font-bold">Store Login</Text>
         <Text className="text-lg text-gray-700">Please sign to continue</Text>
+        <View className="flex-row justify-center">
+         <Image
+            source={require("../../assets/store-logo.png")}
+            className="h-72 w-96"
+          />
+        </View>
+       
         <View className="mt-5 h-screen">
+         
           <View className="relative mb-5">
             <Text
               className="absolute text-red-500 text-sm top-2 left-4 z-10"
@@ -108,8 +125,9 @@ const LoginScreen = ({ navigate }) => {
             <TextInput
               className="bg-gray-100 rounded-lg px-4 pb-3 pt-6 w-full text-base"
               onChangeText={setPassword}
-              secureTextEntry={!visible ? true : false}
               value={password}
+              secureTextEntry={!visible ? true : false}
+              // value={password}
               placeholder="Enter password"
             />
             {/* <LockClosedIcon style={{position: 'absolute', top: 15, left: 10}} color="#c7c7c7" size={30}/> */}
@@ -134,7 +152,6 @@ const LoginScreen = ({ navigate }) => {
               className="flex-row items-center justify-end px-4 mt-4 rounded-full h-14 w-36"
               style={{ backgroundColor: "#FE6205" }}
               onPress={() => {
-                // navigation.navigate("CustomerHome");
                 submitLogin()
               }}
             >
@@ -145,24 +162,11 @@ const LoginScreen = ({ navigate }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View className="flex-1 flex-col justify-end py-10">
-          <Text className="mt-5 text-base text-gray-700 text-center">
-            Don't have a account?
-            <Text
-              className="font-bold text-white"
-              onPress={() => {
-                navigation.navigate("Register");
-              }}
-            >
-              {" "}
-              Sign Up
-            </Text>
-          </Text>
-        </View>
+   
       </View>
       <Spinner visible={loading} />
     </SafeAreaView>
   );
 };
 
-export default LoginScreen;
+export default StoreLogin;
